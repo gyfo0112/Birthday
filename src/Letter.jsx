@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { config } from './config.js'
 
-export default function Letter({ onOpened }) {
+export default function Letter({ onOpened, onNext }) {
   const [open, setOpen] = useState(false)
 
   const toggle = () => {
@@ -21,6 +21,11 @@ export default function Letter({ onOpened }) {
         <span className="env-front" />
         <span className="env-flap" />
       </button>
+      {open && (
+        <button className="btn next" onClick={onNext}>
+          {config.nextButton}
+        </button>
+      )}
     </section>
   )
 }

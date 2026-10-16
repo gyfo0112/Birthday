@@ -11,5 +11,6 @@ export const config = {
   candleCount: 5,
   letterHint: '편지를 탭해서 열어봐 💌',
   message: '예준아 생일축하한다! 가지고 싶은거 있으면 얘기해라! 오늘도 화이팅하고!',
+  nextButton: '다 읽었어 💝',
   replayButton: '다시 보기',
 }

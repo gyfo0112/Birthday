@@ -13,10 +13,7 @@ export default function App() {
     setTimeout(() => setStage('letter'), 1800)
   }
 
-  const onLetterOpened = () => {
-    rain()
-    setTimeout(() => setStage('end'), 3500)
-  }
+  const onLetterOpened = () => rain()
 
   const replay = () => {
     setRound((r) => r + 1)
@@ -36,7 +33,7 @@ export default function App() {
         </section>
       )}
       {stage === 'cake' && <Cake onDone={onCandlesOut} />}
-      {stage === 'letter' && <Letter onOpened={onLetterOpened} />}
+      {stage === 'letter' && <Letter onOpened={onLetterOpened} onNext={() => setStage('end')} />}
       {stage === 'end' && (
         <section className="screen fade-in">
           <div className="emoji-big">🎁</div>
