@@ -1,0 +1,150 @@
+:root {
+  --bg1: #1b1033;
+  --bg2: #3a1c71;
+  --pink: #ff6b9d;
+  --yellow: #ffd166;
+  --blue: #4cc9f0;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', system-ui, sans-serif;
+  color: #fff;
+  background: var(--bg1);
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+}
+
+.stage {
+  position: relative;
+  height: 100dvh;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  background: radial-gradient(circle at 50% 20%, var(--bg2), var(--bg1) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.stars {
+  position: absolute; inset: 0; pointer-events: none; opacity: .7;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 70% 15%, #fff, transparent),
+    radial-gradient(2px 2px at 85% 60%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 35% 75%, #fff, transparent),
+    radial-gradient(2px 2px at 10% 85%, #fff, transparent),
+    radial-gradient(1.5px 1.5px at 60% 90%, #fff, transparent);
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from { opacity: .4 } to { opacity: .9 } }
+
+.screen {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-align: center;
+}
+.fade-in { animation: fade-in .6s ease both; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
+
+.emoji-big { font-size: 84px; animation: bounce 1.6s ease-in-out infinite; }
+@keyframes bounce { 50% { transform: translateY(-14px) } }
+
+.title { margin: 0; font-size: 30px; line-height: 1.4; white-space: pre-line; }
+.hint { margin: 0; font-size: 18px; min-height: 26px; color: var(--yellow); }
+
+.btn {
+  min-height: 52px; padding: 0 32px;
+  border: 0; border-radius: 999px;
+  font: inherit; font-size: 18px; font-weight: 700; color: #1b1033;
+  background: linear-gradient(135deg, var(--yellow), var(--pink));
+  box-shadow: 0 8px 24px rgba(255, 107, 157, .4);
+  cursor: pointer;
+}
+.btn:active { transform: scale(.96); }
+.btn:disabled { opacity: .4; }
+.btn.ghost { background: transparent; color: #fff; border: 2px solid #fff6; box-shadow: none; }
+
+/* ---------- cake ---------- */
+.cake { position: relative; width: 260px; height: 230px; margin-top: 30px; }
+.layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 14px; }
+.layer.top { bottom: 90px; width: 170px; height: 70px; background: linear-gradient(#fff 0 22%, var(--pink) 22%); }
+.layer.bottom { bottom: 22px; width: 240px; height: 72px; background: linear-gradient(#fff 0 22%, #c77dff 22%); }
+.plate { position: absolute; bottom: 0; left: 0; right: 0; height: 22px; border-radius: 50%; background: #e9e4f5; }
+
+.candles {
+  position: absolute; bottom: 158px; left: 50%; transform: translateX(-50%);
+  width: 170px; display: flex; justify-content: space-between; padding: 0 8px;
+}
+.candle {
+  position: relative; width: 44px; height: 80px; margin: -10px -14px; /* 터치 영역 확보 */
+  padding: 0; border: 0; background: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+}
+.stick { width: 10px; height: 34px; border-radius: 3px; }
+.wick { width: 2px; height: 7px; background: #333; }
+.flame {
+  width: 14px; height: 22px; margin-bottom: 1px;
+  background: radial-gradient(circle at 50% 70%, #fff6c9, var(--yellow) 55%, #ff8a00);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  box-shadow: 0 0 18px 6px #ffd16688;
+  transform-origin: 50% 100%;
+  animation: flicker .5s ease-in-out infinite alternate;
+}
+.flame.out { animation: none; opacity: 0; transform: scale(.2); transition: all .3s; }
+@keyframes flicker { from { transform: scale(1) rotate(-3deg) } to { transform: scale(1.1, .95) rotate(3deg) } }
+.smoke {
+  position: absolute; bottom: 44px; width: 6px; height: 26px; border-radius: 6px;
+  background: linear-gradient(#fff8, transparent);
+  animation: smoke 1.6s ease-out forwards;
+}
+@keyframes smoke { from { opacity: 1; transform: translateY(0) } to { opacity: 0; transform: translateY(-34px) scaleX(2) } }
+
+/* ---------- letter ---------- */
+.envelope {
+  position: relative; width: 290px; height: 200px; margin-top: 150px;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  transition: transform .8s ease;
+}
+.envelope.open { transform: translateY(70px); cursor: default; }
+.env-back { position: absolute; inset: 0; background: #d94f7e; border-radius: 8px; }
+.env-front {
+  position: absolute; inset: 0; z-index: 3; border-radius: 8px;
+  background: linear-gradient(#ff6b9d, #e0558a);
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+}
+.env-flap {
+  position: absolute; left: 0; right: 0; top: 0; height: 110px; z-index: 4;
+  background: #ff85b0; border-radius: 8px 8px 0 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top; transition: transform .6s ease, z-index 0s .3s;
+}
+.envelope.open .env-flap { transform: rotateX(180deg); z-index: 1; }
+.paper {
+  position: absolute; left: 14px; right: 14px; top: 12px; height: 170px; z-index: 2;
+  background: #fffdf5; color: #3b2a4d; border-radius: 6px;
+  display: flex; align-items: flex-start; justify-content: center; padding: 16px 14px;
+  box-shadow: 0 2px 10px #0003;
+  transition: transform .9s ease .5s, height .9s ease .5s;
+}
+.envelope.open .paper { transform: translateY(-190px); height: 150px; z-index: 5; }
+.paper-text { font-size: 18px; line-height: 1.7; font-weight: 600; word-break: keep-all; text-align: center; opacity: 0; transition: opacity .6s ease 1.2s; }
+.envelope.open .paper-text { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+.actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.note { margin: 0; font-size: 14px; color: #ffb3c9; }
