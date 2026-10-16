@@ -1,13 +1,16 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { config } from './config.js'
 import Cake from './Cake.jsx'
 import Letter from './Letter.jsx'
+import AgeCounter from './AgeCounter.jsx'
 import { burst, rain } from './confetti.js'
+import { requestMotion, useShake } from './useShake.js'
 
 export default function App() {
   const [stage, setStage] = useState('intro') // intro | cake | letter | end
   const [round, setRound] = useState(0)
   const [muted, setMuted] = useState(false)
+  const [shakeOn, setShakeOn] = useState(false)
   const audioRef = useRef(null)
 
   if (!audioRef.current) {
@@ -37,6 +40,15 @@ export default function App() {
 
   const onLetterOpened = () => rain()
 
+  // 탭 핸들러 안에서 바로 권한 요청 (iOS)
+  const goEnd = () => {
+    requestMotion().then((r) => setShakeOn(r === 'granted'))
+    setStage('end')
+  }
+
+  const onShake = useCallback(() => burst(), [])
+  useShake(stage === 'end' && shakeOn, onShake)
+
   const replay = () => {
     audioRef.current.pause()
     audioRef.current.currentTime = 0
@@ -56,17 +68,22 @@ export default function App() {
         <section className="screen fade-in">
           <div className="emoji-big">🎂</div>
           <h1 className="title">{config.introTitle}</h1>
+          {config.age > 0 && <AgeCounter age={config.age} />}
           <button className="btn" onClick={() => { unlockAudio(); setStage('cake') }}>
             {config.introButton}
           </button>
         </section>
       )}
       {stage === 'cake' && <Cake onDone={onCandlesOut} />}
-      {stage === 'letter' && <Letter onOpened={onLetterOpened} onNext={() => setStage('end')} />}
+      {stage === 'letter' && <Letter onOpened={onLetterOpened} onNext={goEnd} />}
       {stage === 'end' && (
         <section className="screen fade-in">
           <div className="emoji-big">🎁</div>
           <h1 className="title">Happy Birthday,{'\n'}{config.name}!</h1>
+          {shakeOn && <p className="hint shake">{config.shakeHint}</p>}
+          <button className="btn" onClick={burst}>
+            {config.shakeButton}
+          </button>
           <button className="btn ghost" onClick={replay}>
             {config.replayButton}
           </button>
